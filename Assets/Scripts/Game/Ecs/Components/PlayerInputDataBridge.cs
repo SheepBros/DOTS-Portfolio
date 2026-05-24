@@ -1,6 +1,6 @@
 namespace Portfolio
 {
-    public class PlayerInputDataBridge : EcsEntityBridge<PlayerInputData>
+    public class PlayerInputDataBridge : EcsSingleton<PlayerInputData>
     {
         public PlayerInputDataBridge(IWorldProvider worldProvider) : base(worldProvider)
         {

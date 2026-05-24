@@ -29,6 +29,7 @@ namespace Portfolio
 
             LocalTransform playerTransform = SystemAPI.GetComponent<LocalTransform>(playerEntity);
             CollisionRadius playerRadius = SystemAPI.GetComponent<CollisionRadius>(playerEntity);
+            Health hp = SystemAPI.GetComponent<Health>(playerEntity);
             
             var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
             EntityCommandBuffer ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
@@ -51,11 +52,11 @@ namespace Portfolio
 
                 ecb.DestroyEntity(enemyEntity);
 
-                gameState.Health -= 1;
+                hp.Value -= 1;
 
-                if (gameState.Health <= 0)
+                if (hp.Value <= 0)
                 {
-                    gameState.Health = 0;
+                    hp.Value = 0;
                     gameState.IsGameOver = true;
                     break;
                 }

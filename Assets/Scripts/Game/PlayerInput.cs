@@ -32,7 +32,10 @@ namespace Portfolio
             float vertical = Input.GetAxisRaw("Vertical");
             float2 move = new float2(horizontal, vertical);
             
-            move = math.normalize(move);
+            if (math.lengthsq(move) > 0.0001f)
+            {
+                move = math.normalize(move);
+            }
             
             Vector3 mouseScreenPosition = Input.mousePosition;
             Vector3 mouseWorldPosition = Vector3.zero;

@@ -36,7 +36,7 @@ namespace Portfolio
                 SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
             EntityCommandBuffer ecb =
                 ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
-            
+
             double elapsedTime = SystemAPI.Time.ElapsedTime;
 
             foreach (var (playerTransform, spawnData) in
@@ -50,32 +50,35 @@ namespace Portfolio
 
                 float3 playerPosition = playerTransform.ValueRO.Position;
                 float2 shootDirection = inputData.ShootDirection - playerPosition.xy;
-                
+
                 if (math.lengthsq(shootDirection) <= 0.0001f)
                 {
                     continue;
                 }
 
-                shootDirection = math.normalize(shootDirection);
+                if (math.lengthsq(shootDirection) > 0.0001f)
+                {
+                    shootDirection = math.normalize(shootDirection);
+                }
 
                 Entity projectile = ecb.Instantiate(spawnData.ValueRO.Prefab);
-                float3 spawnPosition = playerPosition * new float3(shootDirection.x, shootDirection.y, 0) * 0.7f;
-                
+                float3 spawnPosition = playerPosition + new float3(shootDirection.x, shootDirection.y, 0) * 0.7f;
+
                 ecb.SetComponent(projectile, LocalTransform.FromPositionRotationScale(
                     spawnPosition,
                     quaternion.RotateZ(math.atan2(shootDirection.y, shootDirection.x)),
                     1f));
-                
+
                 ecb.SetComponent(projectile, new MoveDirection()
                 {
                     Value = new float3(shootDirection.x, shootDirection.y, 0)
                 });
-                
+
                 ecb.SetComponent(projectile, new MoveSpeed()
                 {
                     Value = spawnData.ValueRO.Speed
                 });
-                
+
                 ecb.SetComponent(projectile, new FlyTime()
                 {
                     Value = spawnData.ValueRO.Lifetime

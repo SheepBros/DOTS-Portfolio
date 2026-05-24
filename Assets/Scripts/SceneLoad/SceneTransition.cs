@@ -22,6 +22,7 @@ namespace Portfolio
         
         public async UniTask LoadScene(ISceneLoadRequest request, ISceneCleaner cleaner)
         {
+            Debug.LogError("[SceneTransition] LoadScene");
             if (request == null)
             {
                 Debug.LogError("[SceneTransition] Request is null");

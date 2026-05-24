@@ -14,13 +14,13 @@ namespace Portfolio
             _gameManager = gameManager;
         }
         
-        public UniTask LoadAsync(ISceneLoadRequest request)
+        public async UniTask LoadAsync(ISceneLoadRequest request)
         {
             Debug.Log("Loading Game Scene Resources...");
+
+            await UniTask.WaitUntil(() => _gameManager.IsReadyToStart());
             
             _gameManager.StartGame();
-            
-            return UniTask.CompletedTask;
         }
     }
 }

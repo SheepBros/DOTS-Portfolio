@@ -43,7 +43,10 @@ namespace Portfolio
         public void Execute(ref MoveDirection moveDirection)
         {
             float3 move = new float3(PlayerInputData.Move.x, PlayerInputData.Move.y, 0);
-            moveDirection.Value = math.normalize(move);
+            if (math.lengthsq(move) > 0.0001f)
+            {
+                moveDirection.Value = math.normalize(move);
+            }
         }
     }
 }
