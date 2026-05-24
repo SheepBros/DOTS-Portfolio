@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using VContainer;
 
 namespace Portfolio
 {
@@ -7,6 +8,8 @@ namespace Portfolio
     /// </summary>
     public interface ISceneResourceLoader
     {
-        UniTask Load();
+        void SetContainer(IObjectResolver resolver);
+        
+        UniTask LoadAsync(ISceneLoadRequest request);
     }
 }

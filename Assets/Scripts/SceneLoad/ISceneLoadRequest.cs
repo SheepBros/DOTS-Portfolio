@@ -7,7 +7,5 @@ namespace Portfolio
     public interface ISceneLoadRequest
     {
         string SceneName { get; }
-        
-        ISceneResourceLoader CreateResourceLoader();
     }
 }

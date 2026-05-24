@@ -6,14 +6,7 @@ namespace Portfolio
 {
     public class SceneLoader : ISceneLoader
     {
-        private readonly SceneLoadEvent _sceneLoadEvent;
-
         public bool IsLoading { get; private set; }
-
-        public SceneLoader(SceneLoadEvent sceneLoadEvent)
-        {
-            _sceneLoadEvent = sceneLoadEvent;
-        }
 
         public async UniTask LoadScene(string sceneName)
         {
@@ -29,12 +22,8 @@ namespace Portfolio
             }
 
             IsLoading = true;
-            
-            _sceneLoadEvent.OnPreLoad?.Invoke();
 
             await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-            
-            _sceneLoadEvent.OnPostLoad?.Invoke();
 
             IsLoading = false;
         }

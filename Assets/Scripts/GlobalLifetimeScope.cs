@@ -14,7 +14,7 @@ namespace Portfolio
             builder.Register<IApplicationController, ApplicationController>(Lifetime.Singleton);
             builder.Register<ISceneTransition, SceneTransition>(Lifetime.Singleton);
             builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
-            builder.Register<SceneLoadEvent>(Lifetime.Singleton);
+            builder.Register<ISceneResourceLoader, SceneResourceLoader>(Lifetime.Singleton);
 
             builder.RegisterComponent<ILoadingView>(_loadingView);
         }

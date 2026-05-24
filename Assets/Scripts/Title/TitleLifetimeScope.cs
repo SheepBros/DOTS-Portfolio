@@ -12,6 +12,16 @@ namespace Portfolio
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponent(_titleUI);
+
+            builder.Register<TitleSceneResourceProcess>(Lifetime.Singleton)
+                .As<ISceneResourceProcess>();
+            
+            builder.RegisterBuildCallback(container =>
+            {
+                ISceneResourceLoader sceneResourceLoader =
+                    container.Resolve<ISceneResourceLoader>();
+                sceneResourceLoader.SetContainer(container);
+            });
         }
     }
 }

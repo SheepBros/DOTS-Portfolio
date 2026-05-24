@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Portfolio
 {
-    public class TitleSceneResourceLoader : ISceneResourceLoader
+    public class TitleSceneResourceProcess : ISceneResourceProcess
     {
-        public UniTask Load()
+        public UniTask LoadAsync(ISceneLoadRequest request)
         {
             Debug.Log("Loading Title Scene Resources...");
             return UniTask.CompletedTask;

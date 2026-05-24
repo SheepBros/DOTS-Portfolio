@@ -10,10 +10,14 @@ namespace Portfolio
         
         private ILoadingView _loadingView;
         
-        public SceneTransition(ISceneLoader sceneLoader, ILoadingView loadingView)
+        private ISceneResourceLoader _resourceLoader;
+        
+        public SceneTransition(ISceneLoader sceneLoader, ILoadingView loadingView,
+            ISceneResourceLoader resourceLoader)
         {
             _sceneLoader = sceneLoader;
             _loadingView = loadingView;
+            _resourceLoader = resourceLoader;
         }
         
         public async UniTask LoadScene(ISceneLoadRequest request, ISceneCleaner cleaner)
@@ -44,11 +48,7 @@ namespace Portfolio
             
                 await _sceneLoader.LoadScene(request.SceneName);
 
-                var resourceLoader = request.CreateResourceLoader();
-                if (resourceLoader != null)
-                {
-                    await resourceLoader.Load();
-                }
+                await _resourceLoader.LoadAsync(request);
             
                 if (_loadingView != null)
                 {
