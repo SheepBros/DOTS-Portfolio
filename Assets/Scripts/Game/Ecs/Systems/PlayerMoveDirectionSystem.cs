@@ -5,6 +5,7 @@ using Unity.Mathematics;
 namespace Portfolio
 {
     [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateBefore(typeof(UnitMoveSystem))]
     public partial struct PlayerMoveDirectionSystem : ISystem
     {
         [BurstCompile]
@@ -46,6 +47,10 @@ namespace Portfolio
             if (math.lengthsq(move) > 0.0001f)
             {
                 moveDirection.Value = math.normalize(move);
+            }
+            else
+            {
+                moveDirection.Value = move;
             }
         }
     }

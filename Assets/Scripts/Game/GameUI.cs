@@ -19,9 +19,16 @@ namespace Portfolio
         [SerializeField]
         private PopupGamePause _popupGamePause;
 
+        [Inject]
+        public void Bind(IGameManager gameManager)
+        {
+            _popupGamePause.Bind(gameManager);
+        }
+
         private void Awake()
         {
             _pauseButton.onClick.AddListener(OnClickedPauseButton);
+            _popupGamePause.Hide();
         }
 
         public void SetPlayerHp(int value)

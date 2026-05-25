@@ -9,6 +9,8 @@ namespace Portfolio
         private EntityManager _entityManager;
         
         private EntityQuery _query;
+        
+        private bool _isDisposed;
 
         public EcsSingleton(IWorldProvider worldProvider)
         {
@@ -62,6 +64,13 @@ namespace Portfolio
 
         public void Dispose()
         {
+            if (_isDisposed)
+            {
+                return;
+            }
+            
+            _isDisposed = true;
+            
             if (!_query.IsEmpty)
             {
                 _query.Dispose();

@@ -61,6 +61,8 @@ namespace Portfolio
                     break;
                 }
             }
+            
+            SystemAPI.SetComponent(playerEntity, hp);
 
             Entity gameStateEntity = SystemAPI.GetSingletonEntity<GameState>();
             SystemAPI.SetComponent(gameStateEntity, gameState);

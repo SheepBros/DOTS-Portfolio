@@ -18,9 +18,9 @@ namespace Portfolio
         {
             Debug.Log("Loading Game Scene Resources...");
 
-            await UniTask.WaitUntil(() => _gameManager.IsReadyToStart());
+            await UniTask.WaitUntil(_gameManager.IsReadyToStart);
             
-            _gameManager.StartGame();
+            await _gameManager.StartGame();
         }
     }
 }

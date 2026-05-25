@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer.Unity;
 
 namespace Portfolio
@@ -20,10 +21,17 @@ namespace Portfolio
         
         public void Tick()
         {
-            if (_gameStateBridge.TryGet(out GameState state))
+            if (!_gameStateBridge.TryGet(out GameState state))
             {
-                _gameUI.SetScore(state.Score);
+                return;
             }
+
+            if (state.IsPaused || state.IsGameOver)
+            {
+                return;
+            }
+            
+            _gameUI.SetScore(state.Score);
             
             if (_playerHealthBridge.TryGet(out Health hp))
             {

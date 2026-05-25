@@ -47,12 +47,12 @@ MonoBehaviour:
   playerPrefab: {fileID: 3209700473751261359, guid: 926575ee5d40f451fb88158f990aeb1e, type: 3}
   enemyPrefab: {fileID: 7364071777675400571, guid: 17c10ff733b244384956738e4e420199, type: 3}
   projectilePrefab: {fileID: 2382865896818921695, guid: 985296593622d4e0d9e89c4a6edd525c, type: 3}
-  projectileFireCooldown: 0.1
+  projectileFireCooldown: 0.05
   projectileSpeed: 12
   projectileLifetime: 2
-  enemySpawnInterval: 1
+  enemySpawnInterval: 0.1
   enemySpawnRectWidth: 24
   enemySpawnRectHeight: 16
   enemySpawnCornerRandomRadius: 2
   enemyRandomSeed: 1
-  enemyMaxSpawnCount: 100
+  enemyMaxSpawnCount: 1000

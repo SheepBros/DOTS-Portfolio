@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -7,7 +8,7 @@ using VContainer.Unity;
 
 namespace Portfolio
 {
-    public class GameManager : IGameManager, ITickable
+    public class GameManager : IGameManager, ITickable, IDisposable
     {
         private GameStateBridge _gameStateBridge;
         
@@ -20,6 +21,10 @@ namespace Portfolio
         private EntityQuery _gamePrefabQuery;
 
         private EntityQuery _gameEntityQuery;
+
+        private bool _isDisposed;
+
+        private bool _isExiting;
 
         public GameManager(GameStateBridge gameStateBridge, PlayerInputDataBridge playerInputDataBridge,
             ISceneTransition sceneTransition, IWorldProvider worldProvider)
@@ -37,6 +42,9 @@ namespace Portfolio
         
         public async UniTask StartGame()
         {
+            _isDisposed = false;
+            _isExiting = false;
+            
             ClearGameEntities();
 
             _gameStateBridge.EnsureExists(new GameState()
@@ -79,13 +87,27 @@ namespace Portfolio
 
         public void EndAndExitGame()
         {
+            _isExiting = true;
+            
             ClearGameEntities();
             
             _sceneTransition.LoadScene(new TitleSceneLoadRequest(), new GameSceneCleaner()).Forget();
         }
+        
+        public bool IsReadyToStart()
+        {
+            EnsureQueries();
+            
+            return !_gamePrefabQuery.IsEmpty;
+        }
 
         public void Tick()
         {
+            if (_isDisposed || _isExiting)
+            {
+                return;
+            }
+            
             if (!_gameStateBridge.TryGet(out GameState state))
             {
                 return;
@@ -95,6 +117,16 @@ namespace Portfolio
             {
                 EndAndExitGame();
             }
+        }
+
+        public void Dispose()
+        {
+            _isDisposed = true;
+            
+            _gameStateBridge?.Dispose();
+            _playerInputDataBridge?.Dispose();
+            _gamePrefabQuery.Dispose();
+            _gameEntityQuery.Dispose();
         }
 
         private void SpawnPlayer(GamePrefabData prefabData)
@@ -146,13 +178,6 @@ namespace Portfolio
                 SpawnIndex = 0u,
                 MaxSpawnCount = prefabData.EnemyMaxSpawnCount
             });
-        }
-        
-        public bool IsReadyToStart()
-        {
-            EnsureQueries();
-            
-            return !_gamePrefabQuery.IsEmpty;
         }
 
         private void EnsureQueries()

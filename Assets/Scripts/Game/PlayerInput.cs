@@ -1,5 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Portfolio
 {
@@ -28,30 +29,62 @@ namespace Portfolio
                 return;
             }
             
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
-            float2 move = new float2(horizontal, vertical);
+            Keyboard keyboard = Keyboard.current;
+            float2 move = float2.zero;
+
+            if (keyboard != null)
+            {
+                if (keyboard.wKey.isPressed)
+                {
+                    move.y += 1f;
+                }
+                
+                if (keyboard.sKey.isPressed)
+                {
+                    move.y -= 1f;
+                }
+                
+                if (keyboard.dKey.isPressed)
+                {
+                    move.x += 1f;
+                }
+                
+                if (keyboard.aKey.isPressed)
+                {
+                    move.x -= 1f;
+                }
+            }
             
             if (math.lengthsq(move) > 0.0001f)
             {
                 move = math.normalize(move);
             }
             
-            Vector3 mouseScreenPosition = Input.mousePosition;
-            Vector3 mouseWorldPosition = Vector3.zero;
-            
-            Camera camera = Camera.main;
-            if (camera != null)
+            Mouse mouse = Mouse.current;
+            float2 mouseWorldPosition = float2.zero;
+            bool isFirePressed = false;
+
+            if (mouse != null)
             {
-                mouseScreenPosition.z = -camera.transform.position.z;
-                mouseWorldPosition = camera.ScreenToWorldPoint(mouseScreenPosition);
+                Vector2 mouseScreenPosition = mouse.position.ReadValue();
+                
+                Camera camera = Camera.main;
+                if (camera != null)
+                {
+                    Vector3 screenPosition = new Vector3(mouseScreenPosition.x,
+                        mouseScreenPosition.y, -camera.transform.position.z);
+                    Vector3 worldPosition = camera.ScreenToWorldPoint(screenPosition);
+                    mouseWorldPosition = new float2(worldPosition.x, worldPosition.y);
+                }
+                
+                isFirePressed = mouse.leftButton.isPressed;
             }
 
             _playerInputDataBridge.Set(new PlayerInputData()
             {
                 Move = move,
-                ShootDirection = new float2(mouseWorldPosition.x, mouseWorldPosition.y),
-                IsFirePressed = Input.GetMouseButton(0)
+                ShootDirection = mouseWorldPosition,
+                IsFirePressed = isFirePressed
             });
         }
     }

@@ -14,7 +14,7 @@ namespace Portfolio
             builder.RegisterEntryPoint<GameManager>().As<IGameManager>();
             builder.Register<GameSceneResourceProcess>(Lifetime.Singleton)
                 .As<ISceneResourceProcess>();
-            builder.Register<PlayerInput>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<PlayerInput>();
 
             builder.Register<IWorldProvider, WorldProvider>(Lifetime.Singleton);
             builder.Register<GameStateBridge>(Lifetime.Singleton);

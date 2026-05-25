@@ -18,12 +18,9 @@ namespace Portfolio
         
         private IGameManager _gameManager;
 
-        [Inject]
-        private void Bind(IGameManager gameManager)
+        public void Bind(IGameManager gameManager)
         {
             _gameManager = gameManager;
-            
-            Hide();
         }
 
         private void Awake()
@@ -34,19 +31,21 @@ namespace Portfolio
 
         public void Show()
         {
+            _gameManager.PauseGame();
+            
             _root.SetActive(true);
         }
 
         public void Hide()
         {
             _root.SetActive(false);
+            
+            _gameManager.Resume();
         }
 
         private void OnClickedResumeButton()
         {
             Hide();
-            
-            _gameManager.Resume();
         }
 
         private void OnClickedExitButton()
