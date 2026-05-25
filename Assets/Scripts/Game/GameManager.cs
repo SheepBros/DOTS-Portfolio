@@ -91,7 +91,7 @@ namespace Portfolio
             
             ClearGameEntities();
             
-            _sceneTransition.LoadScene(new TitleSceneLoadRequest(), new GameSceneCleaner()).Forget();
+            _sceneTransition.LoadScene(new TitleSceneLoadRequest(), new GameSceneCleaner(this)).Forget();
         }
         
         public bool IsReadyToStart()
@@ -101,9 +101,17 @@ namespace Portfolio
             return !_gamePrefabQuery.IsEmpty;
         }
 
+        public void ClearGameEntities()
+        {
+            if (!_gameEntityQuery.IsEmpty)
+            {
+                _worldProvider.EntityManager.DestroyEntity(_gameEntityQuery);
+            }
+        }
+
         public void Tick()
         {
-            if (_isDisposed || _isExiting)
+            if (_isDisposed || _isExiting || !_worldProvider.IsWorldAlive)
             {
                 return;
             }
@@ -200,14 +208,6 @@ namespace Portfolio
             {
                 _gameEntityQuery = entityManager.CreateEntityQuery(
                     ComponentType.ReadOnly<GameEntityTag>());
-            }
-        }
-
-        private void ClearGameEntities()
-        {
-            if (!_gameEntityQuery.IsEmpty)
-            {
-                _worldProvider.EntityManager.DestroyEntity(_gameEntityQuery);
             }
         }
     }

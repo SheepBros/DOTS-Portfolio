@@ -39,7 +39,7 @@ namespace Portfolio
         private uint enemyRandomSeed = 1u;
 
         [SerializeField]
-        private int enemyMaxSpawnCount = 100;
+        private int enemyMaxSpawnCount = 1000;
 
         private class Baker : Baker<GamePrefabAuthoring>
         {

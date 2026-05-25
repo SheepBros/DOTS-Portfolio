@@ -20,6 +20,12 @@ namespace Portfolio
 
         public bool TryGet(out T value)
         {
+            if (_isDisposed)
+            {
+                value = default;
+                return false;
+            }
+
             if (_query.CalculateEntityCount() != 1)
             {
                 value = default;
@@ -32,6 +38,11 @@ namespace Portfolio
 
         public void Set(T value)
         {
+            if (_isDisposed)
+            {
+                return;
+            }
+
             if (_query.CalculateEntityCount() != 1)
             {
                 Debug.LogError($"[EcsSingleton] {typeof(T).Name} singleton count is not 1.");
@@ -44,6 +55,11 @@ namespace Portfolio
 
         public void EnsureExists(T initialValue)
         {
+            if (_isDisposed)
+            {
+                return;
+            }
+
             int count = _query.CalculateEntityCount();
 
             if (count == 0)

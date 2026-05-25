@@ -11,6 +11,14 @@ namespace Portfolio
     [UpdateBefore(typeof(EnemyChasePlayerSystem))]
     public partial struct EnemySpawnSystem : ISystem
     {
+        private EntityQuery _enemyQuery;
+        
+        public void OnCreate(ref SystemState state)
+        {
+            _enemyQuery = state.GetEntityQuery(
+                ComponentType.ReadOnly<EnemyTag>());
+        }
+
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
@@ -38,6 +46,7 @@ namespace Portfolio
             {
                 ElapsedTime = SystemAPI.Time.ElapsedTime,
                 PlayerPosition = playerTransform.Position,
+                EnemyCount = _enemyQuery.CalculateEntityCount(),
                 Ecb = ecb
             };
 
@@ -51,6 +60,8 @@ namespace Portfolio
 
             public float3 PlayerPosition;
 
+            public int EnemyCount;
+
             public EntityCommandBuffer.ParallelWriter Ecb;
 
             private void Execute(
@@ -62,7 +73,7 @@ namespace Portfolio
                     return;
                 }
 
-                if (spawnData.SpawnIndex >= spawnData.MaxSpawnCount)
+                if (EnemyCount >= spawnData.MaxSpawnCount)
                 {
                     return;
                 }

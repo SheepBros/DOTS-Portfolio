@@ -7,5 +7,7 @@ namespace Portfolio
         World World { get; }
         
         EntityManager EntityManager { get; }
+        
+        bool IsWorldAlive { get; }
     }
 }

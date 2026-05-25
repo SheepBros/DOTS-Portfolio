@@ -7,5 +7,7 @@ namespace Portfolio
         public World World => World.DefaultGameObjectInjectionWorld;
         
         public EntityManager EntityManager => World.EntityManager;
+        
+        public bool IsWorldAlive => World != null && World.IsCreated;
     }
 }

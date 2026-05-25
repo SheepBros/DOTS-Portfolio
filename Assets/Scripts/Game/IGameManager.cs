@@ -13,5 +13,7 @@ namespace Portfolio
         void EndAndExitGame();
 
         bool IsReadyToStart();
+
+        void ClearGameEntities();
     }
 }
