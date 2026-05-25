@@ -9,15 +9,24 @@ namespace Portfolio
         private GameStateBridge _gameStateBridge;
         
         private PlayerInputDataBridge _playerInputDataBridge;
+        
+        private IWorldProvider _worldProvider;
 
-        public PlayerInput(GameStateBridge gameStateBridge, PlayerInputDataBridge playerInputDataBridge)
+        public PlayerInput(GameStateBridge gameStateBridge, PlayerInputDataBridge playerInputDataBridge,
+            IWorldProvider worldProvider)
         {
             _gameStateBridge = gameStateBridge;
             _playerInputDataBridge = playerInputDataBridge;
+            _worldProvider = worldProvider;
         }
         
         public void Tick()
         {
+            if (!_worldProvider.IsWorldAlive)
+            {
+                return;
+            }
+            
             if (!_gameStateBridge.TryGet(out GameState state))
             {
                 return;
